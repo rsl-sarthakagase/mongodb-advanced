@@ -1,0 +1,66 @@
+============================================================
+MongoDB Advanced Assignment
+Task 6 - Backup and Restore Commands
+============================================================
+
+
+1. BACKUP company_advanced
+
+mongodump --db company_advanced --archive=company_advanced.archive --gzip
+
+
+2. RESTORE INTO A NEW DATABASE
+
+mongorestore --archive=company_advanced.archive --gzip --nsFrom="company_advanced.*" --nsTo="company_advanced_restore.*"
+
+
+3. CONNECT TO THE RESTORED DATABASE
+
+mongosh
+
+use company_advanced_restore
+
+
+4. VERIFY COLLECTIONS
+
+show collections
+
+
+5. VERIFY EMPLOYEE COUNT
+
+db.employees.countDocuments()
+
+
+6. VERIFY DEPARTMENT COUNT
+
+db.departments.countDocuments()
+
+
+7. VERIFY SESSION COUNT
+
+db.sessions.countDocuments()
+
+
+8. VERIFY AN IMPORTANT RESTORED EMPLOYEE
+
+db.employees.findOne({ name: "Alice" })
+
+
+9. VERIFY ALL RESTORED EMPLOYEES
+
+db.employees.find().sort({ _id: 1 }).forEach(printjson)
+
+
+10. VERIFY ALL RESTORED DEPARTMENTS
+
+db.departments.find().sort({ _id: 1 }).forEach(printjson)
+
+
+============================================================
+Expected important result:
+employees count = 4
+departments count = 2
+
+The sessions count may depend on whether the TTL document
+has already expired when the backup is performed.
+============================================================
